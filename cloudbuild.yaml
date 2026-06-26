@@ -22,5 +22,19 @@ steps:
       - '--region=us-central1'
       - '--images=us-central1-docker.pkg.dev/$PROJECT_ID/sample-repo/sample-app=us-central1-docker.pkg.dev/$PROJECT_ID/sample-repo/sample-app:$SHORT_SHA'
 
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Waiting for test deployment to complete..."
+        sleep 60
+        gcloud deploy releases promote \
+          --release=release-$SHORT_SHA \
+          --delivery-pipeline=sample-app-pipeline \
+          --region=us-central1 \
+          --to-target=prod \
+          --quiet
+
 options:
   logging: CLOUD_LOGGING_ONLY
