@@ -1,0 +1,30 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: sample-app-pipeline
+description: Sample pipeline to Cloud Run with test/prod promotion
+serialPipeline:
+  stages:
+    - targetId: test
+      profiles: [test]
+    - targetId: prod
+      profiles: [prod]
+      strategy:
+        standard: {}
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: test
+description: Cloud Run test environment
+run:
+  location: projects/gci-techss-gcp-pjnp-01nl165115/locations/us-central1
+---
+apiVersion: deploy.cloud.google.com/v1
+kind: Target
+metadata:
+  name: prod
+description: Cloud Run production environment
+requireApproval: true
+run:
+  location: projects/gci-techss-gcp-pjnp-01nl165115/locations/us-central1

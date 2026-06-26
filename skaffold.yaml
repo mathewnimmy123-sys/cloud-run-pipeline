@@ -1,0 +1,20 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: sample-app
+build:
+  artifacts:
+    - image: us-central1-docker.pkg.dev/gci-techss-gcp-pjnp-01nl165115/sample-repo/sample-app
+profiles:
+  - name: test
+    manifests:
+      rawYaml:
+        - run-test.yaml
+    deploy:
+      cloudrun: {}
+  - name: prod
+    manifests:
+      rawYaml:
+        - run-prod.yaml
+    deploy:
+      cloudrun: {}

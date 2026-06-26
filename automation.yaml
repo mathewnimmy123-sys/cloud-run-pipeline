@@ -1,0 +1,19 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: Automation
+metadata:
+  name: sample-app-pipeline/prod-auto-repair
+description: Automatically retry and rollback failed deployments to prod
+serviceAccount: 591592795300-compute@developer.gserviceaccount.com
+selector:
+  targets:
+  - id: prod
+rules:
+  - repairRolloutRule:
+      id: repair-on-failure
+      jobs: ["deploy"]
+      repairPhases:
+        - retry:
+            attempts: 2
+            backoffMode: BACKOFF_MODE_EXPONENTIAL
+        - rollback:
+            destinationPhase: stable
