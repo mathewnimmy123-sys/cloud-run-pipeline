@@ -2,11 +2,9 @@ import os
 from flask import Flask
 app = Flask(__name__)
 
-raise RuntimeError("Intentional crash for rollback demo")
-
 @app.route("/")
 def hello():
-    return "Hello from version 3!"
+    return "Hello from version 1!"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
